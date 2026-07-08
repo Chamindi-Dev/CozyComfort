@@ -11,17 +11,10 @@ namespace CozyComfort.Data
         {
         }
 
-
-        // Database Tables
-
         public DbSet<Material> Materials { get; set; }
-
         public DbSet<BlanketModel> BlanketModels { get; set; }
-
         public DbSet<Distributor> Distributors { get; set; }
-
         public DbSet<Seller> Sellers { get; set; }
-
         public DbSet<Customer> Customers { get; set; }
         public DbSet<FactoryInventory> FactoryInventories { get; set; }
         public DbSet<DistributorInventory> DistributorInventories { get; set; }
@@ -33,8 +26,6 @@ namespace CozyComfort.Data
         public DbSet<TransferOrder> TransferOrders { get; set; }
         public DbSet<TransferOrderItem> TransferOrderItems { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -192,9 +183,9 @@ namespace CozyComfort.Data
                 .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<FactoryInventory>()
-                .HasCheckConstraint(
+                .ToTable(t => t.HasCheckConstraint(
                     "CK_FactoryInventories_Qty",
-                    "[QuantityOnHand] >= 0 AND [ReservedQuantity] >= 0 AND [ReservedQuantity] <= [QuantityOnHand]");
+                    "[QuantityOnHand] >= 0 AND [ReservedQuantity] >= 0 AND [ReservedQuantity] <= [QuantityOnHand]"));
 
             modelBuilder.Entity<FactoryInventory>()
                 .HasOne(f => f.BlanketModel)
@@ -232,9 +223,9 @@ namespace CozyComfort.Data
                 .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<DistributorInventory>()
-                .HasCheckConstraint(
+                .ToTable(t => t.HasCheckConstraint(
                     "CK_DistributorInventories_Qty",
-                    "[QuantityOnHand] >= 0 AND [ReservedQuantity] >= 0 AND [ReservedQuantity] <= [QuantityOnHand]");
+                    "[QuantityOnHand] >= 0 AND [ReservedQuantity] >= 0 AND [ReservedQuantity] <= [QuantityOnHand]"));
 
             modelBuilder.Entity<DistributorInventory>()
                 .HasOne(di => di.Distributor)
@@ -339,52 +330,42 @@ namespace CozyComfort.Data
             modelBuilder.Entity<CustomerOrder>()
                 .HasKey(o => o.Id);
 
-
             modelBuilder.Entity<CustomerOrder>()
                 .Property(o => o.OrderNumber)
                 .IsRequired()
                 .HasMaxLength(100);
 
-
             modelBuilder.Entity<CustomerOrder>()
                 .HasIndex(o => o.OrderNumber)
                 .IsUnique();
-
 
             modelBuilder.Entity<CustomerOrder>()
                 .Property(o => o.Status)
                 .HasMaxLength(50)
                 .HasDefaultValue("Pending");
 
-
-
             modelBuilder.Entity<CustomerOrder>()
                 .Property(o => o.FinalSource)
                 .HasMaxLength(50);
-
 
             modelBuilder.Entity<CustomerOrder>()
                 .Property(o => o.TotalAmount)
                 .HasPrecision(18, 2)
                 .HasDefaultValue(0);
 
-
             modelBuilder.Entity<CustomerOrder>()
                 .Property(o => o.OrderDate)
                 .HasDefaultValueSql("GETDATE()");
 
-
             modelBuilder.Entity<CustomerOrder>()
                 .Property(o => o.Remarks)
                 .HasMaxLength(500);
-
 
             modelBuilder.Entity<CustomerOrder>()
                 .HasOne(o => o.Customer)
                 .WithMany(c => c.CustomerOrders)
                 .HasForeignKey(o => o.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
 
             modelBuilder.Entity<CustomerOrder>()
                 .HasOne(o => o.Seller)
@@ -397,7 +378,7 @@ namespace CozyComfort.Data
                 {
                     t.HasCheckConstraint(
                         "CK_CustomerOrders_Status",
-                        @"Status IN 
+                        @"Status IN
             (
             'Pending',
             'CheckingSellerStock',
@@ -410,7 +391,6 @@ namespace CozyComfort.Data
             'Delivered',
             'Cancelled'
             )");
-
 
                     t.HasCheckConstraint(
                         "CK_CustomerOrders_FinalSource",
@@ -426,11 +406,9 @@ namespace CozyComfort.Data
             modelBuilder.Entity<CustomerOrderItem>()
                 .HasKey(x => x.Id);
 
-
             modelBuilder.Entity<CustomerOrderItem>()
                 .Property(x => x.UnitPrice)
                 .HasPrecision(18, 2);
-
 
             modelBuilder.Entity<CustomerOrderItem>()
                 .Property(x => x.Subtotal)
@@ -439,20 +417,17 @@ namespace CozyComfort.Data
                     "[Quantity] * [UnitPrice]",
                     stored: true);
 
-
             modelBuilder.Entity<CustomerOrderItem>()
                 .HasOne(x => x.CustomerOrder)
                 .WithMany(x => x.CustomerOrderItems)
                 .HasForeignKey(x => x.CustomerOrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             modelBuilder.Entity<CustomerOrderItem>()
                 .HasOne(x => x.BlanketModel)
                 .WithMany(x => x.CustomerOrderItems)
                 .HasForeignKey(x => x.BlanketModelId)
                 .OnDelete(DeleteBehavior.Restrict);
-
 
             modelBuilder.Entity<CustomerOrderItem>()
                 .ToTable(t =>
@@ -464,27 +439,22 @@ namespace CozyComfort.Data
             modelBuilder.Entity<AvailabilityRequest>()
                 .HasKey(x => x.Id);
 
-
             modelBuilder.Entity<AvailabilityRequest>()
                 .Property(x => x.RequestNumber)
                 .IsRequired()
                 .HasMaxLength(100);
 
-
             modelBuilder.Entity<AvailabilityRequest>()
                 .HasIndex(x => x.RequestNumber)
                 .IsUnique();
-
 
             modelBuilder.Entity<AvailabilityRequest>()
                 .Property(x => x.Status)
                 .HasDefaultValue("Pending");
 
-
             modelBuilder.Entity<AvailabilityRequest>()
                 .Property(x => x.RequestedDate)
                 .HasDefaultValueSql("GETDATE()");
-
 
             modelBuilder.Entity<AvailabilityRequest>()
                 .HasOne(x => x.CustomerOrder)
@@ -497,7 +467,6 @@ namespace CozyComfort.Data
                 .WithMany(x => x.AvailabilityRequests)
                 .HasForeignKey(x => x.BlanketModelId)
                 .OnDelete(DeleteBehavior.Restrict);
-
 
             modelBuilder.Entity<AvailabilityRequest>()
                 .HasOne(x => x.Seller)
@@ -519,12 +488,10 @@ namespace CozyComfort.Data
                         "[RequestLevel] IN ('SellerToDistributor','DistributorToFactory')"
                     );
 
-
                     t.HasCheckConstraint(
                         "CK_AvailabilityRequests_Status",
                         "[Status] IN ('Pending','Available','NotAvailable','ProductionPossible','Rejected')"
                     );
-
 
                     t.HasCheckConstraint(
                         "CK_AvailabilityRequests_Qty",
@@ -535,16 +502,13 @@ namespace CozyComfort.Data
             modelBuilder.Entity<TransferOrder>()
                 .HasKey(x => x.Id);
 
-
             modelBuilder.Entity<TransferOrder>()
                 .HasIndex(x => x.TransferNumber)
                 .IsUnique();
 
-
             modelBuilder.Entity<TransferOrder>()
                 .Property(x => x.RequestedDate)
                 .HasDefaultValueSql("GETDATE()");
-
 
             modelBuilder.Entity<TransferOrder>()
                 .Property(x => x.Status)
@@ -556,13 +520,11 @@ namespace CozyComfort.Data
                 .HasForeignKey(x => x.CustomerOrderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             modelBuilder.Entity<TransferOrder>()
                 .HasOne(x => x.FromDistributor)
                 .WithMany()
                 .HasForeignKey(x => x.FromDistributorId)
                 .OnDelete(DeleteBehavior.Restrict);
-
 
             modelBuilder.Entity<TransferOrder>()
                 .HasOne(x => x.ToDistributor)
@@ -570,20 +532,17 @@ namespace CozyComfort.Data
                 .HasForeignKey(x => x.ToDistributorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             modelBuilder.Entity<TransferOrder>()
                 .HasOne(x => x.FromSeller)
                 .WithMany()
                 .HasForeignKey(x => x.FromSellerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             modelBuilder.Entity<TransferOrder>()
                 .HasOne(x => x.ToSeller)
                 .WithMany()
                 .HasForeignKey(x => x.ToSellerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
 
             modelBuilder.Entity<TransferOrder>()
                 .ToTable(t =>
@@ -593,19 +552,16 @@ namespace CozyComfort.Data
                         "[FromLocationType] IN ('Factory','Distributor','Seller')"
                     );
 
-
                     t.HasCheckConstraint(
                         "CK_TransferOrders_ToLocationType",
                         "[ToLocationType] IN ('Distributor','Seller','Customer')"
                     );
-
 
                     t.HasCheckConstraint(
                         "CK_TransferOrders_Status",
                         "[Status] IN ('Pending','Approved','InTransit','Completed','Cancelled')"
                     );
                 });
-
 
             modelBuilder.Entity<TransferOrderItem>()
                 .HasKey(t => t.Id);
@@ -615,9 +571,9 @@ namespace CozyComfort.Data
                 .IsRequired();
 
             modelBuilder.Entity<TransferOrderItem>()
-                .HasCheckConstraint(
+                .ToTable(t => t.HasCheckConstraint(
                     "CK_TransferOrderItems_Quantity",
-                    "[Quantity] > 0");
+                    "[Quantity] > 0"));
 
             modelBuilder.Entity<TransferOrderItem>()
                 .HasOne(t => t.TransferOrder)
@@ -684,26 +640,24 @@ namespace CozyComfort.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<StockMovement>()
-                .HasCheckConstraint(
-                    "CK_StockMovements_Quantity",
-                    "[Quantity] > 0");
+                .ToTable(t =>
+                {
+                    t.HasCheckConstraint(
+                        "CK_StockMovements_Quantity",
+                        "[Quantity] > 0");
 
+                    t.HasCheckConstraint(
+                        "CK_StockMovements_MovementType",
+                        "[MovementType] IN ('Reserve','Release','Issue','Receive','Adjust')");
 
-            modelBuilder.Entity<StockMovement>()
-                .HasCheckConstraint(
-                    "CK_StockMovements_MovementType",
-                    "[MovementType] IN ('Reserve','Release','Issue','Receive','Adjust')");
-
-            modelBuilder.Entity<StockMovement>()
-                .HasCheckConstraint(
-                    "CK_StockMovements_OnlyOneInventory",
-                    @"(
+                    t.HasCheckConstraint(
+                        "CK_StockMovements_OnlyOneInventory",
+                        @"(
             (CASE WHEN [FactoryInventoryId] IS NOT NULL THEN 1 ELSE 0 END) +
             (CASE WHEN [DistributorInventoryId] IS NOT NULL THEN 1 ELSE 0 END) +
             (CASE WHEN [SellerInventoryId] IS NOT NULL THEN 1 ELSE 0 END)
           ) = 1");
-
-
+                });
         }
     }
 }
