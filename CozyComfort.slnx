@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="CozyComfort.API/CozyComfort.API.csproj" />
+  <Project Path="CozyComfort.Application/CozyComfort.Application.csproj" Id="8dd74493-abd7-4a7a-ae3a-c6b3ccc01816" />
+  <Project Path="CozyComfort.Data/CozyComfort.Data.csproj" Id="a95440a2-dc1e-4906-b4f5-73d2086f9489" />
+  <Project Path="CozyComfort.Domain/CozyComfort.Domain.csproj" Id="db6bf8db-70e4-49e7-99b5-8af409ce9aea" />
+  <Project Path="CozyComfort.Infrastucture/CozyComfort.Infrastucture.csproj" Id="9fb6e2c8-4fc2-444f-92ca-d980246f6990" />
+</Solution>

@@ -1,0 +1,28 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CozyComfort.Domain.Entities
+{
+    public class SellerInventory
+    {
+        public int Id { get; set; }
+
+        public int SellerId { get; set; }
+
+        public int BlanketModelId { get; set; }
+
+        public int QuantityOnHand { get; set; }
+
+        public int ReservedQuantity { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int AvailableQuantity { get; private set; }
+
+        public DateTime LastUpdated { get; set; }
+
+        public Seller Seller { get; set; } = null!;
+
+        public BlanketModel BlanketModel { get; set; } = null!;
+        public ICollection<StockMovement> StockMovements { get; set; }
+        = new List<StockMovement>();
+    }
+}
