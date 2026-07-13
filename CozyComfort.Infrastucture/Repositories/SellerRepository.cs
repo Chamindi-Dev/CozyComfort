@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Data;
 using CozyComfort.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +16,6 @@ namespace CozyComfort.Infrastructure.Repositories
         }
 
 
-
-
         public async Task<IEnumerable<Seller>> GetAllAsync()
         {
             return await _context.Sellers
@@ -26,18 +24,12 @@ namespace CozyComfort.Infrastructure.Repositories
         }
 
 
-
-
-
         public async Task<Seller?> GetByIdAsync(int id)
         {
             return await _context.Sellers
                 .Include(x => x.Distributor)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
-
-
-
 
 
         public async Task<Seller> CreateAsync(
@@ -49,9 +41,6 @@ namespace CozyComfort.Infrastructure.Repositories
 
             return seller;
         }
-
-
-
 
 
         public async Task<Seller?> UpdateAsync(
@@ -78,10 +67,6 @@ namespace CozyComfort.Infrastructure.Repositories
 
             return existing;
         }
-
-
-
-
 
         public async Task<bool> DeleteAsync(int id)
         {

@@ -1,6 +1,6 @@
 ﻿using CozyComfort.Domain.Entities;
 
-namespace CozyComfort.Application.Interfaces
+namespace CozyComfort.Infrastructure.Interfaces
 {
     public interface IStockMovementRepository
     {

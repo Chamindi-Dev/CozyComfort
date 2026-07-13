@@ -1,6 +1,6 @@
 ﻿using CozyComfort.Domain.Entities;
 
-namespace CozyComfort.Application.Interfaces
+namespace CozyComfort.Infrastructure.Interfaces
 {
     public interface IBlanketModelRepository
     {
@@ -13,6 +13,5 @@ namespace CozyComfort.Application.Interfaces
         Task<BlanketModel?> UpdateAsync(BlanketModel blanketModel);
 
         Task<bool> DeleteAsync(int id);
-        Task<BlanketModel> AddAsync(BlanketModel blanketModel);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -12,10 +13,10 @@ namespace CozyComfort.Domain.Entities
 
         public int Quantity { get; set; }
 
-        // Navigation Properties
-
+        [JsonIgnore]
         public TransferOrder TransferOrder { get; set; } = null!;
 
+        [JsonIgnore]
         public BlanketModel BlanketModel { get; set; } = null!;
     }
 }

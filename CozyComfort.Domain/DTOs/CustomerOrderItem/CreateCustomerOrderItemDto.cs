@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CozyComfort.Application.DTOs
+namespace CozyComfort.Domain.DTOs
 {
     public class CreateCustomerOrderItemDto
     {

@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Application.DTOs.AvailabilityRequest
+﻿namespace CozyComfort.Domain.DTOs.AvailabilityRequest
 {
     public class CreateAvailabilityRequestDto
     {

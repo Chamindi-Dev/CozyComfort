@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Domain.Entities;
 using CozyComfort.Data;
 using Microsoft.EntityFrameworkCore;

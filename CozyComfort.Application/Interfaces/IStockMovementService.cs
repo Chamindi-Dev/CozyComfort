@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.DTOs.StockMovement;
+﻿using CozyComfort.Domain.DTOs.StockMovement;
 
 namespace CozyComfort.Application.Interfaces
 {

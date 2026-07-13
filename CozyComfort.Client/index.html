@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Comfort - SOA Supply Chain Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <header class="app-sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-cloud-moon brand-logo"></i>
+                <div class="brand-text">
+                    <h1>Cozy Comfort</h1>
+                    <span>Supply Chain Net</span>
+                </div>
+            </div>
+            
+            <nav class="app-nav">
+                <button class="nav-btn active" id="tab-btn-seller" onclick="switchTab('seller')">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Seller Service</span>
+                    <span class="port-badge">Port 5010</span>
+                </button>
+                <button class="nav-btn" id="tab-btn-distributor" onclick="switchTab('distributor')">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                    <span>Distributor Service</span>
+                    <span class="port-badge">Port 5020</span>
+                </button>
+                <button class="nav-btn" id="tab-btn-manufacturer" onclick="switchTab('manufacturer')">
+                    <i class="fa-solid fa-industry"></i>
+                    <span>Manufacturer Service</span>
+                    <span class="port-badge">Port 5030</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-status">
+                <div class="status-indicator online"></div>
+                <div class="status-details">
+                    <p>SOA Service Grid</p>
+                    <small>All Nodes Online</small>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="app-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="welcome">
+                    <h2 id="current-panel-title">Seller Service Control Panel</h2>
+                    <p id="current-panel-desc">Manage Customer Orders, local stock checks, and supply replenishment.</p>
+                </div>
+                <div class="global-actions">
+                    <button class="btn btn-secondary" onclick="refreshAllData()">
+                        <i class="fa-solid fa-arrows-rotate"></i> Sync Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: SELLER SERVICE -->
+            <section class="tab-panel active" id="panel-seller">
+                <div class="grid-layout">
+                    <!-- Column 1: Inventory & Create Order -->
+                    <div class="col-main">
+                        <!-- Seller Stock Card -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-cubes"></i> Local Seller Stock Levels</h3>
+                                <select id="seller-select" class="form-control-sm" onchange="loadSellerData()"></select>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Blanket Model</th>
+                                            <th>On Hand</th>
+                                            <th>Reserved</th>
+                                            <th>Available</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="seller-inventory-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Place Order Card -->
+                        <div class="glass-card mt-4">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-cart-plus"></i> Receive Customer Order</h3>
+                            </div>
+                            <form id="customer-order-form" onsubmit="handlePlaceOrder(event)" class="form-grid">
+                                <div class="form-group">
+                                    <label for="order-customer">Select Customer</label>
+                                    <select id="order-customer" class="form-control" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order-blanket">Blanket Model</label>
+                                    <select id="order-blanket" class="form-control" onchange="onOrderBlanketChange()" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order-qty">Quantity</label>
+                                    <input type="number" id="order-qty" class="form-control" min="1" value="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order-price">Unit Price ($)</label>
+                                    <input type="text" id="order-price" class="form-control" readonly>
+                                </div>
+                                <div class="form-group span-2">
+                                    <label for="order-remarks">Special Instructions / Remarks</label>
+                                    <input type="text" id="order-remarks" class="form-control" placeholder="e.g. Leave at doorstep">
+                                </div>
+                                <div class="form-actions span-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-receipt"></i> Process Order
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Order Logs & Availability Requests -->
+                    <div class="col-side">
+                        <!-- Seller Orders Log -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-list-check"></i> Customer Orders Log</h3>
+                            </div>
+                            <div class="log-list" id="seller-orders-log">
+                                <!-- Dynamic logs -->
+                            </div>
+                        </div>
+
+                        <!-- Availability & Transfers Log -->
+                        <div class="glass-card mt-4">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-paper-plane"></i> Stock Requests & Transfers</h3>
+                            </div>
+                            <div class="log-list" id="seller-transfers-log">
+                                <!-- Dynamic logs -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: DISTRIBUTOR SERVICE -->
+            <section class="tab-panel" id="panel-distributor">
+                <div class="grid-layout">
+                    <!-- Column 1: Inventory & Availability Requests -->
+                    <div class="col-main">
+                        <!-- Distributor Stock Card -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-warehouse"></i> Distributor Inventory</h3>
+                                <select id="distributor-select" class="form-control-sm" onchange="loadDistributorData()"></select>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Blanket Model</th>
+                                            <th>On Hand</th>
+                                            <th>Reserved</th>
+                                            <th>Available</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="distributor-inventory-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Incoming Availability Requests -->
+                        <div class="glass-card mt-4">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-envelope-open-text"></i> Incoming Availability Requests</h3>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Req #</th>
+                                            <th>Seller</th>
+                                            <th>Model</th>
+                                            <th>Qty Requested</th>
+                                            <th>Level</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="distributor-requests-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Distributor Transfer Orders -->
+                    <div class="col-side">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-truck-arrow-right"></i> Outbound Stock Shipments</h3>
+                            </div>
+                            <div class="log-list" id="distributor-transfers-log">
+                                <!-- Dynamic transfer orders -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: MANUFACTURER SERVICE -->
+            <section class="tab-panel" id="panel-manufacturer">
+                <div class="grid-layout">
+                    <!-- Column 1: Factory Inventory & Production Capacities -->
+                    <div class="col-main">
+                        <!-- Factory Inventory -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-gears"></i> Factory Finished Goods Stock</h3>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Blanket Model</th>
+                                            <th>On Hand Stock</th>
+                                            <th>Reserved</th>
+                                            <th>Available Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="manufacturer-inventory-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Production Capacities -->
+                        <div class="glass-card mt-4">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-gauge-high"></i> Production Capacities & Lead Times</h3>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Blanket Model</th>
+                                            <th>Daily Capacity</th>
+                                            <th>Weekly Capacity</th>
+                                            <th>Current Backlog</th>
+                                            <th>Standard Lead Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="manufacturer-capacity-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Manufacturing Requests & Lead Times -->
+                    <div class="col-side">
+                        <!-- Manufacturing Orders / Backlog requests -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-clipboard-list"></i> Production & Transfer Requests</h3>
+                            </div>
+                            <div class="log-list" id="manufacturer-requests-log">
+                                <!-- Dynamic logs -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast-notification">
+        <i class="fa-solid fa-circle-info" id="toast-icon"></i>
+        <div class="toast-content">
+            <h4 id="toast-title">Notification</h4>
+            <p id="toast-message">Workflow status message here.</p>
+        </div>
+    </div>
+    
+    <!-- Script References -->
+    <script src="app-v2.js"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
-﻿using CozyComfort.Application.DTOs.StockMovement;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Domain.DTOs.StockMovement;
+using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
 
 namespace CozyComfort.Application.Services
 {

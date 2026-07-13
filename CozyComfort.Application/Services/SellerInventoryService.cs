@@ -1,7 +1,8 @@
-﻿using CozyComfort.Application.Interfaces;
-using CozyComfort.Application.Repositories;
-using CozyComfort.Data.DTOs;
+﻿using CozyComfort.Infrastructure.Interfaces;
+using CozyComfort.Infrastructure.Repositories;
+using CozyComfort.Domain.DTOs;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
 
 namespace CozyComfort.Application.Services
 {

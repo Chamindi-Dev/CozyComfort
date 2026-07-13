@@ -1,55 +1,87 @@
-﻿using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Infrastructure.Interfaces;
+using CozyComfort.Domain.DTOs.Material;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
 
 namespace CozyComfort.Application.Services
 {
     public class MaterialService : IMaterialService
     {
-        private readonly IMaterialRepository _materialRepository;
+        private readonly IMaterialRepository _repository;
 
-        public MaterialService(IMaterialRepository materialRepository)
+        public MaterialService(IMaterialRepository repository)
         {
-            _materialRepository = materialRepository;
+            _repository = repository;
         }
 
-        public async Task<IEnumerable<Material>> GetAllAsync()
+        public async Task<IEnumerable<MaterialDto>> GetAllAsync()
         {
-            return await _materialRepository.GetAllAsync();
+            var materials = await _repository.GetAllAsync();
+
+            return materials.Select(x => new MaterialDto
+            {
+                Id = x.Id,
+                MaterialName = x.MaterialName,
+                Description = x.Description
+            });
         }
 
-        public async Task<Material?> GetByIdAsync(int id)
+        public async Task<MaterialDto?> GetByIdAsync(int id)
         {
-            return await _materialRepository.GetByIdAsync(id);
-        }
+            var material = await _repository.GetByIdAsync(id);
 
-        public async Task<Material> AddAsync(Material material)
-        {
-            return await _materialRepository.AddAsync(material);
-        }
-
-        public async Task<Material?> UpdateAsync(int id, Material material)
-        {
-            var existing = await _materialRepository.GetByIdAsync(id);
-
-            if (existing == null)
+            if (material == null)
                 return null;
 
-            existing.MaterialName = material.MaterialName;
-            existing.Description = material.Description;
+            return new MaterialDto
+            {
+                Id = material.Id,
+                MaterialName = material.MaterialName,
+                Description = material.Description
+            };
+        }
 
-            await _materialRepository.UpdateAsync(existing);
+        public async Task<MaterialDto> CreateAsync(CreateMaterialDto dto)
+        {
+            var material = new Material
+            {
+                MaterialName = dto.MaterialName,
+                Description = dto.Description
+            };
 
-            return existing;
+            await _repository.AddAsync(material);
+
+            return new MaterialDto
+            {
+                Id = material.Id,
+                MaterialName = material.MaterialName,
+                Description = material.Description
+            };
+        }
+
+        public async Task<bool> UpdateAsync(int id, UpdateMaterialDto dto)
+        {
+            var material = await _repository.GetByIdAsync(id);
+
+            if (material == null)
+                return false;
+
+            material.MaterialName = dto.MaterialName;
+            material.Description = dto.Description;
+
+            await _repository.UpdateAsync(material);
+
+            return true;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var existing = await _materialRepository.GetByIdAsync(id);
+            var material = await _repository.GetByIdAsync(id);
 
-            if (existing == null)
+            if (material == null)
                 return false;
 
-            await _materialRepository.DeleteAsync(id);
+            await _repository.DeleteAsync(id);
 
             return true;
         }

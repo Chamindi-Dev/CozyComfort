@@ -1,6 +1,8 @@
-﻿using CozyComfort.Application.DTOs;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Domain.DTOs;
+using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
+
 
 
 namespace CozyComfort.Application.Services
@@ -16,9 +18,6 @@ namespace CozyComfort.Application.Services
         {
             _repository = repository;
         }
-
-
-
         public async Task<IEnumerable<CustomerOrderDto>> GetAllAsync()
         {
 
@@ -40,10 +39,6 @@ namespace CozyComfort.Application.Services
             });
 
         }
-
-
-
-
 
         public async Task<CustomerOrderDto?> GetByIdAsync(int id)
         {
@@ -71,11 +66,6 @@ namespace CozyComfort.Application.Services
             };
 
         }
-
-
-
-
-
 
         public async Task<CustomerOrderDto> CreateAsync(
             CreateCustomerOrderDto dto)
@@ -135,12 +125,6 @@ namespace CozyComfort.Application.Services
 
         }
 
-
-
-
-
-
-
         public async Task<bool> UpdateAsync(
             int id,
             UpdateCustomerOrderDto dto)
@@ -178,13 +162,6 @@ namespace CozyComfort.Application.Services
             return true;
 
         }
-
-
-
-
-
-
-
 
         public async Task<bool> DeleteAsync(int id)
         {

@@ -1,11 +1,14 @@
-﻿using CozyComfort.Application.DTOs.StockMovement;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs.StockMovement;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class StockMovementsController : ControllerBase
     {
         private readonly IStockMovementService _service;
@@ -15,7 +18,6 @@ namespace CozyComfort.API.Controllers
             _service = service;
         }
 
-        // GET: api/StockMovements
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StockMovementDto>>> GetAll()
         {
@@ -23,7 +25,7 @@ namespace CozyComfort.API.Controllers
             return Ok(stockMovements);
         }
 
-        // GET: api/StockMovements/5
+
         [HttpGet("{id}")]
         public async Task<ActionResult<StockMovementDto>> GetById(int id)
         {
@@ -35,7 +37,6 @@ namespace CozyComfort.API.Controllers
             return Ok(stockMovement);
         }
 
-        // POST: api/StockMovements
         [HttpPost]
         public async Task<ActionResult<StockMovementDto>> Create(CreateStockMovementDto dto)
         {
@@ -47,7 +48,7 @@ namespace CozyComfort.API.Controllers
                 created);
         }
 
-        // PUT: api/StockMovements/5
+   
         [HttpPut("{id}")]
         public async Task<ActionResult<StockMovementDto>> Update(
             int id,
@@ -61,7 +62,6 @@ namespace CozyComfort.API.Controllers
             return Ok(updated);
         }
 
-        // DELETE: api/StockMovements/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

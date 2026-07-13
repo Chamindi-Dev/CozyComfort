@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Application.DTOs.TransferOrder
+﻿namespace CozyComfort.Domain.DTOs.TransferOrder
 {
     public class TransferOrderDto
     {

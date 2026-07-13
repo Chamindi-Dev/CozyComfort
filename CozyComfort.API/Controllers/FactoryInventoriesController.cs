@@ -1,12 +1,14 @@
-﻿using CozyComfort.Application.DTOs;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    
+    [Authorize]
+
     public class FactoryInventoriesController : ControllerBase
     {
         private readonly IFactoryInventoryService _factoryInventoryService;

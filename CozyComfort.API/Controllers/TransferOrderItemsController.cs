@@ -1,11 +1,14 @@
-﻿using CozyComfort.Application.DTOs.TransferOrderItem;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs.TransferOrderItem;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class TransferOrderItemsController : ControllerBase
     {
         private readonly ITransferOrderItemService _service;
@@ -15,7 +18,6 @@ namespace CozyComfort.API.Controllers
             _service = service;
         }
 
-        // GET: api/TransferOrderItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TransferOrderItemDto>>> GetAll()
         {
@@ -23,7 +25,6 @@ namespace CozyComfort.API.Controllers
             return Ok(items);
         }
 
-        // GET: api/TransferOrderItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TransferOrderItemDto>> GetById(int id)
         {
@@ -35,7 +36,6 @@ namespace CozyComfort.API.Controllers
             return Ok(item);
         }
 
-        // POST: api/TransferOrderItems
         [HttpPost]
         public async Task<ActionResult<TransferOrderItemDto>> Create(CreateTransferOrderItemDto dto)
         {
@@ -47,7 +47,6 @@ namespace CozyComfort.API.Controllers
                 created);
         }
 
-        // PUT: api/TransferOrderItems/5
         [HttpPut("{id}")]
         public async Task<ActionResult<TransferOrderItemDto>> Update(
             int id,
@@ -61,7 +60,6 @@ namespace CozyComfort.API.Controllers
             return Ok(updated);
         }
 
-        // DELETE: api/TransferOrderItems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

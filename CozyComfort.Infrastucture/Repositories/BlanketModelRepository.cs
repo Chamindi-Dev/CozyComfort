@@ -1,6 +1,6 @@
-﻿using CozyComfort.Application.Interfaces;
-using CozyComfort.Data;
+﻿using CozyComfort.Data;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CozyComfort.Infrastructure.Repositories
@@ -9,13 +9,10 @@ namespace CozyComfort.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-
         public BlanketModelRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-
-
 
         public async Task<IEnumerable<BlanketModel>> GetAllAsync()
         {
@@ -24,8 +21,6 @@ namespace CozyComfort.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-
-
         public async Task<BlanketModel?> GetByIdAsync(int id)
         {
             return await _context.BlanketModels
@@ -33,10 +28,7 @@ namespace CozyComfort.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-
-
-        public async Task<BlanketModel> CreateAsync(
-            BlanketModel blanketModel)
+        public async Task<BlanketModel> CreateAsync(BlanketModel blanketModel)
         {
             _context.BlanketModels.Add(blanketModel);
 
@@ -45,19 +37,12 @@ namespace CozyComfort.Infrastructure.Repositories
             return blanketModel;
         }
 
-
-
-
-        public async Task<BlanketModel?> UpdateAsync(
-            BlanketModel blanketModel)
+        public async Task<BlanketModel?> UpdateAsync(BlanketModel blanketModel)
         {
-            var existing = await _context.BlanketModels
-                .FindAsync(blanketModel.Id);
-
+            var existing = await _context.BlanketModels.FindAsync(blanketModel.Id);
 
             if (existing == null)
                 return null;
-
 
             existing.SKU = blanketModel.SKU;
             existing.ModelName = blanketModel.ModelName;
@@ -67,38 +52,23 @@ namespace CozyComfort.Infrastructure.Repositories
             existing.UnitPrice = blanketModel.UnitPrice;
             existing.IsActive = blanketModel.IsActive;
 
-
             await _context.SaveChangesAsync();
-
 
             return existing;
         }
 
-
-
-
-
         public async Task<bool> DeleteAsync(int id)
         {
-            var model = await _context.BlanketModels
-                .FindAsync(id);
+            var entity = await _context.BlanketModels.FindAsync(id);
 
-
-            if (model == null)
+            if (entity == null)
                 return false;
 
-
-            _context.BlanketModels.Remove(model);
+            _context.BlanketModels.Remove(entity);
 
             await _context.SaveChangesAsync();
 
-
             return true;
-        }
-
-        public Task<BlanketModel> AddAsync(BlanketModel blanketModel)
-        {
-            throw new NotImplementedException();
         }
     }
 }

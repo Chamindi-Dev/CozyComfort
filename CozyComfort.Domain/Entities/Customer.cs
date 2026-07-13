@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -22,6 +23,7 @@ namespace CozyComfort.Domain.Entities
         [StringLength(255)]
         public string? Address { get; set; }
 
+        [JsonIgnore]
         public ICollection<CustomerOrder> CustomerOrders { get; set; }
             = new List<CustomerOrder>();
     }

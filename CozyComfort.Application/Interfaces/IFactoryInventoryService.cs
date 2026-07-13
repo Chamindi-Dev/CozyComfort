@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.DTOs;
+﻿using CozyComfort.Domain.DTOs;
 
 namespace CozyComfort.Application.Interfaces
 {

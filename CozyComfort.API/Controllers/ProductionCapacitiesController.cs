@@ -1,13 +1,15 @@
-﻿using CozyComfort.Application.DTOs;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace CozyComfort.API.Controllers
 {
 
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class ProductionCapacitiesController : ControllerBase
     {
 
@@ -20,11 +22,6 @@ namespace CozyComfort.API.Controllers
             _service = service;
         }
 
-
-
-
-        // GET: api/ProductionCapacities
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -32,11 +29,6 @@ namespace CozyComfort.API.Controllers
 
             return Ok(result);
         }
-
-
-
-
-        // GET api/ProductionCapacities/1
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -52,12 +44,6 @@ namespace CozyComfort.API.Controllers
             return Ok(result);
         }
 
-
-
-
-
-        // POST api/ProductionCapacities
-
         [HttpPost]
         public async Task<IActionResult> Create(
             CreateProductionCapacityDto dto)
@@ -71,12 +57,6 @@ namespace CozyComfort.API.Controllers
                 new { id = result.Id },
                 result);
         }
-
-
-
-
-
-        // PUT api/ProductionCapacities/1
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
@@ -93,12 +73,6 @@ namespace CozyComfort.API.Controllers
 
             return NoContent();
         }
-
-
-
-
-
-        // DELETE api/ProductionCapacities/1
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

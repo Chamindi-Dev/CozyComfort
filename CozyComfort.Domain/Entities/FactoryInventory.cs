@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -17,7 +18,10 @@ namespace CozyComfort.Domain.Entities
 
         public DateTime LastUpdated { get; set; }
 
+        [JsonIgnore]
         public BlanketModel BlanketModel { get; set; } = null!;
+
+        [JsonIgnore]
         public ICollection<StockMovement> StockMovements { get; set; }
         = new List<StockMovement>();
     }

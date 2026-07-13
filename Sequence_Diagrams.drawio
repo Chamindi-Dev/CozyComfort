@@ -1,0 +1,35 @@
+<mxfile host="app.diagrams.net" modified="2026-07-13T12:00:00.000Z" agent="Mozilla/5.0" version="21.6.8" type="device">
+  <diagram id="diagram_seq1" name="Use Case 1 - Checkout &amp; Escalation">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="&lt;pre&gt;@startuml&#xa;actor Customer&#xa;participant &quot;Seller Service\n(:5010)&quot; as Seller&#xa;participant &quot;Distributor Service\n(:5020)&quot; as Distributor&#xa;database &quot;SQL Server&quot; as DB&#xa;&#xa;Customer -&gt; Seller : POST /api/CustomerOrders (checkout)&#xa;activate Seller&#xa;Seller -&gt; DB : INSERT CustomerOrder (status=&quot;Pending&quot;)&#xa;Seller -&gt; DB : SELECT SellerInventory WHERE SKU = OrderSKU&#xa;DB --&gt; Seller : AvailableQuantity = 0&#xa;Note over Seller : Stock unavailable locally.\nInitiating supply chain escalation.&#xa;Seller -&gt; DB : INSERT AvailabilityRequest (level=&quot;SellerToDistributor&quot;, status=&quot;Pending&quot;)&#xa;Seller -&gt; Distributor : Notify pending AvailabilityRequest (id=101)&#xa;activate Distributor&#xa;Distributor -&gt; DB : SELECT DistributorInventory WHERE SKU = OrderSKU&#xa;DB --&gt; Distributor : AvailableQuantity = 0&#xa;Note over Distributor : Stock unavailable at distributor warehouse.\nEscalating request to manufacturer.&#xa;Distributor -&gt; DB : UPDATE AvailabilityRequest SET RequestLevel=&quot;DistributorToManufacturer&quot;&#xa;deactivate Distributor&#xa;Seller --&gt; Customer : 201 Created (Order pending fulfillment escalation)&#xa;deactivate Seller&#xa;@enduml&lt;/pre&gt;" style="shape=mxgraph.sysml.plantuml;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="800" height="900" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="diagram_seq2" name="Use Case 2 - Transfer Order">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="&lt;pre&gt;@startuml&#xa;actor Distributor&#xa;participant &quot;Distributor Service\n(:5020)&quot; as DistSvc&#xa;participant &quot;Seller Service\n(:5010)&quot; as SellerSvc&#xa;database &quot;SQL Server&quot; as DB&#xa;&#xa;Distributor -&gt; DistSvc : PUT /api/AvailabilityRequests/101 (status=&quot;Approved&quot;)&#xa;activate DistSvc&#xa;DistSvc -&gt; DB : UPDATE AvailabilityRequest SET Status=&quot;Approved&quot;, ResponseDate=NOW()&#xa;DistSvc -&gt; DB : INSERT TransferOrder (From: Distributor, To: Seller, status=&quot;Pending&quot;)&#xa;activate DB&#xa;DB --&gt; DistSvc : TransferOrderId = 202&#xa;deactivate DB&#xa;DistSvc -&gt; DB : INSERT TransferOrderItem (TransferOrderId=202, ModelId=1, Qty=5)&#xa;Note over DistSvc : Fulfill the transfer and deduct from distributor inventory&#xa;DistSvc -&gt; DB : UPDATE DistributorInventory SET QuantityOnHand = QuantityOnHand - 5&#xa;DistSvc -&gt; DB : UPDATE SellerInventory SET QuantityOnHand = QuantityOnHand + 5&#xa;DistSvc -&gt; DB : INSERT StockMovement (MovementType=&quot;TransferOut&quot;, Qty=5)&#xa;DistSvc -&gt; SellerSvc : PUT /api/CustomerOrders/1 (status=&quot;Processing&quot;)&#xa;DistSvc --&gt; Distributor : 200 OK (Transfer Order Completed &amp; Inventory Dispatched)&#xa;deactivate DistSvc&#xa;@enduml&lt;/pre&gt;" style="shape=mxgraph.sysml.plantuml;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="800" height="900" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="diagram_seq3" name="Use Case 3 - Production Capacity">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="&lt;pre&gt;@startuml&#xa;actor Manufacturer&#xa;participant &quot;Manufacturer Service\n(:5030)&quot; as MfrSvc&#xa;database &quot;SQL Server&quot; as DB&#xa;&#xa;Manufacturer -&gt; MfrSvc : GET /api/ProductionCapacities&#xa;activate MfrSvc&#xa;MfrSvc -&gt; DB : SELECT * FROM ProductionCapacities WHERE BlanketModelId = 1&#xa;activate DB&#xa;DB --&gt; MfrSvc : DailyCapacity = 100, WeeklyCapacity = 700&#xa;deactivate DB&#xa;MfrSvc -&gt; DB : SELECT SUM(RequestedQuantity) FROM AvailabilityRequests WHERE Status = &quot;Pending&quot;&#xa;activate DB&#xa;DB --&gt; MfrSvc : PendingQuantity = 300&#xa;deactivate DB&#xa;Note over MfrSvc : Calculated Lead Time = PendingQuantity / DailyCapacity (3 days)&#xa;MfrSvc --&gt; Manufacturer : 200 OK (DailyCapacity=100, PendingJobs=300, CalculatedLeadTime=3 days)&#xa;deactivate MfrSvc&#xa;@enduml&lt;/pre&gt;" style="shape=mxgraph.sysml.plantuml;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="800" height="900" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

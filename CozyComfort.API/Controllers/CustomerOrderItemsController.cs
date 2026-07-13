@@ -1,11 +1,13 @@
 ﻿using CozyComfort.Application.Interfaces;
 using CozyComfort.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class CustomerOrderItemsController : ControllerBase
     {
         private readonly ICustomerOrderItemService _service;
@@ -17,9 +19,6 @@ namespace CozyComfort.API.Controllers
             _service = service;
         }
 
-
-
-        // GET: api/customerorderitems
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -28,9 +27,6 @@ namespace CozyComfort.API.Controllers
             return Ok(items);
         }
 
-
-
-        // GET: api/customerorderitems/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -47,9 +43,6 @@ namespace CozyComfort.API.Controllers
             return Ok(item);
         }
 
-
-
-        // GET: api/customerorderitems/order/5
         [HttpGet("order/{customerOrderId}")]
         public async Task<IActionResult> GetByOrderId(
             int customerOrderId)
@@ -61,9 +54,6 @@ namespace CozyComfort.API.Controllers
             return Ok(items);
         }
 
-
-
-        // POST: api/customerorderitems
         [HttpPost]
         public async Task<IActionResult> Create(
             CustomerOrderItem customerOrderItem)
@@ -85,9 +75,6 @@ namespace CozyComfort.API.Controllers
             }
         }
 
-
-
-        // PUT: api/customerorderitems/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
@@ -112,9 +99,6 @@ namespace CozyComfort.API.Controllers
             }
         }
 
-
-
-        // DELETE: api/customerorderitems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

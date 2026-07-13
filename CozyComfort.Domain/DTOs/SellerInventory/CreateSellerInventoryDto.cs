@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CozyComfort.Data.DTOs
+namespace CozyComfort.Domain.DTOs
 {
     public class CreateSellerInventoryDto
     {

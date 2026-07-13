@@ -1,63 +1,45 @@
 ﻿using CozyComfort.Application.Interfaces;
 using CozyComfort.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class SellersController : ControllerBase
     {
-        private readonly ISellerRepository _repository;
+        private readonly ISellerService _sellerService;
 
-
-        public SellersController(
-            ISellerRepository repository)
+        public SellersController(ISellerService sellerService)
         {
-            _repository = repository;
+            _sellerService = sellerService;
         }
-
-
-
-
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(
-                await _repository.GetAllAsync()
-            );
+            var sellers = await _sellerService.GetAllAsync();
+            return Ok(sellers);
         }
-
-
-
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var seller =
-                await _repository.GetByIdAsync(id);
-
+            var seller = await _sellerService.GetByIdAsync(id);
 
             if (seller == null)
                 return NotFound();
 
-
             return Ok(seller);
         }
 
-
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Create(
-            Seller seller)
+        public async Task<IActionResult> Create(Seller seller)
         {
-            var result =
-                await _repository.CreateAsync(seller);
-
+            var result = await _sellerService.AddAsync(seller);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -65,44 +47,31 @@ namespace CozyComfort.API.Controllers
                 result);
         }
 
-
-
-
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(
-            int id,
-            Seller seller)
+        public async Task<IActionResult> Update(int id, Seller seller)
         {
             if (id != seller.Id)
                 return BadRequest();
 
+            var existing = await _sellerService.GetByIdAsync(id);
 
-            var result =
-                await _repository.UpdateAsync(seller);
-
-
-            if (result == null)
+            if (existing == null)
                 return NotFound();
 
+            await _sellerService.UpdateAsync(seller);
 
-            return Ok(result);
+            return NoContent();
         }
-
-
-
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result =
-                await _repository.DeleteAsync(id);
+            var existing = await _sellerService.GetByIdAsync(id);
 
-
-            if (!result)
+            if (existing == null)
                 return NotFound();
 
+            await _sellerService.DeleteAsync(id);
 
             return NoContent();
         }

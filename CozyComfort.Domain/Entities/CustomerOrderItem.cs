@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -22,13 +23,10 @@ namespace CozyComfort.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public decimal Subtotal { get; private set; }
 
-
-
-        // Navigation Properties
-
+        [JsonIgnore]
         public CustomerOrder CustomerOrder { get; set; } = null!;
 
-
+        [JsonIgnore]
         public BlanketModel BlanketModel { get; set; } = null!;
     }
 }

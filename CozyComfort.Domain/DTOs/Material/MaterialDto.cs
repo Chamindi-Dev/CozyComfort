@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Application.DTOs.Material
+﻿namespace CozyComfort.Domain.DTOs.Material
 {
     public class MaterialDto
     {

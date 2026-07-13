@@ -1,5 +1,6 @@
-﻿using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
 
 namespace CozyComfort.Application.Services
 {
@@ -14,34 +15,22 @@ namespace CozyComfort.Application.Services
             _repository = repository;
         }
 
-
-
-        // Get All
         public async Task<IEnumerable<CustomerOrderItem>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
 
-
-
-        // Get By Id
         public async Task<CustomerOrderItem?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
 
-
-
-        // Get By Customer Order Id
         public async Task<IEnumerable<CustomerOrderItem>> GetByOrderIdAsync(
             int customerOrderId)
         {
             return await _repository.GetByOrderIdAsync(customerOrderId);
         }
 
-
-
-        // Create
         public async Task<CustomerOrderItem> CreateAsync(
             CustomerOrderItem customerOrderItem)
         {
@@ -62,9 +51,6 @@ namespace CozyComfort.Application.Services
             return await _repository.AddAsync(customerOrderItem);
         }
 
-
-
-        // Update
         public async Task UpdateAsync(
             CustomerOrderItem customerOrderItem)
         {
@@ -82,9 +68,6 @@ namespace CozyComfort.Application.Services
             await _repository.UpdateAsync(customerOrderItem);
         }
 
-
-
-        // Delete
         public async Task DeleteAsync(int id)
         {
             var item = await _repository.GetByIdAsync(id);

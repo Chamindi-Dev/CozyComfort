@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Data.DTOs
+﻿namespace CozyComfort.Domain.DTOs
 {
     public class SellerInventoryDto
     {

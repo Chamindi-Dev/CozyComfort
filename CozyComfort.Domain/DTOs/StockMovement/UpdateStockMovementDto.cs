@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CozyComfort.Application.DTOs.StockMovement
+namespace CozyComfort.Domain.DTOs.StockMovement
 {
     public class UpdateStockMovementDto
     {

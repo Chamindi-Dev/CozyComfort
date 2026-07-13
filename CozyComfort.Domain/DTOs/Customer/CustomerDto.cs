@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Application.DTOs.Customer
+﻿namespace CozyComfort.Domain.DTOs.Customer
 {
     public class CustomerDto
     {

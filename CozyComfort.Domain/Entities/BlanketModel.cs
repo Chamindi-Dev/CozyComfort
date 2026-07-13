@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -18,11 +19,9 @@ namespace CozyComfort.Domain.Entities
         public string ModelName { get; set; } = string.Empty;
 
 
-        // Foreign Key
         public int MaterialId { get; set; }
 
 
-        // Navigation Property
         public Material? Material { get; set; }
 
 
@@ -40,26 +39,35 @@ namespace CozyComfort.Domain.Entities
 
         public bool IsActive { get; set; } = true;
 
+        [JsonIgnore]
         public ICollection<FactoryInventory> FactoryInventories { get; set; }
          = new List<FactoryInventory>();
 
+        [JsonIgnore]
         public ICollection<DistributorInventory> DistributorInventories { get; set; }
          = new List<DistributorInventory>();
 
+        [JsonIgnore]
         public ICollection<SellerInventory> SellerInventories { get; set; }
          = new List<SellerInventory>();
 
+        [JsonIgnore]
         public ICollection<ProductionCapacity> ProductionCapacities { get; set; }
          = new List<ProductionCapacity>();
 
+        [JsonIgnore]
         public ICollection<CustomerOrderItem> CustomerOrderItems { get; set; }
          = new List<CustomerOrderItem>();
 
+        [JsonIgnore]
         public ICollection<AvailabilityRequest> AvailabilityRequests { get; set; }
          = new List<AvailabilityRequest>();
 
+        [JsonIgnore]
         public ICollection<TransferOrderItem> TransferOrderItems { get; set; }
          = new List<TransferOrderItem>();
+
+        [JsonIgnore]
         public ICollection<StockMovement> StockMovements { get; set; }
          = new List<StockMovement>();
     }

@@ -1,6 +1,7 @@
-﻿using CozyComfort.Application.DTOs.TransferOrder;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Domain.DTOs.TransferOrder;
+using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
 
 namespace CozyComfort.Application.Services
 {

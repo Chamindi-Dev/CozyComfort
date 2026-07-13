@@ -1,13 +1,17 @@
-﻿using CozyComfort.Domain.Entities;
+﻿using CozyComfort.Domain.DTOs.BlanketModel;
 
 namespace CozyComfort.Application.Interfaces
 {
     public interface IBlanketModelService
     {
-        Task<IEnumerable<BlanketModel>> GetAllAsync();
-        Task<BlanketModel?> GetByIdAsync(int id);
-        Task<BlanketModel> AddAsync(BlanketModel blanketModel);
-        Task<BlanketModel?> UpdateAsync(int id, BlanketModel blanketModel);
+        Task<IEnumerable<BlanketModelDto>> GetAllAsync();
+
+        Task<BlanketModelDto?> GetByIdAsync(int id);
+
+        Task<BlanketModelDto> CreateAsync(CreateBlanketModelDto dto);
+
+        Task<bool> UpdateAsync(int id, UpdateBlanketModelDto dto);
+
         Task<bool> DeleteAsync(int id);
     }
 }

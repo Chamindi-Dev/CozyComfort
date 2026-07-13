@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.DTOs.AvailabilityRequest;
+﻿using CozyComfort.Domain.DTOs.AvailabilityRequest;
 
 namespace CozyComfort.Application.Interfaces
 {

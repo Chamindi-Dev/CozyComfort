@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -15,8 +16,7 @@ namespace CozyComfort.Domain.Entities
         [MaxLength(255)]
         public string? Description { get; set; }
 
-
-        // Navigation Property
+        [JsonIgnore]
         public ICollection<BlanketModel> BlanketModels { get; set; }
             = new List<BlanketModel>();
     }

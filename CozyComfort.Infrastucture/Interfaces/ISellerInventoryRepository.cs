@@ -1,6 +1,6 @@
 ﻿using CozyComfort.Domain.Entities;
 
-namespace CozyComfort.Application.Repositories
+namespace CozyComfort.Infrastructure.Repositories
 {
     public interface ISellerInventoryRepository
     {

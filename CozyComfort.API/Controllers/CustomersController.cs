@@ -1,12 +1,14 @@
-﻿using CozyComfort.Application.DTOs.Customer;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs.Customer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _service;

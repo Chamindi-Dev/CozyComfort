@@ -1,61 +1,44 @@
 ﻿using CozyComfort.Application.Interfaces;
-using CozyComfort.Domain.Entities;
+using CozyComfort.Domain.DTOs.BlanketModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     public class BlanketModelsController : ControllerBase
     {
-        private readonly IBlanketModelRepository _repository;
+        private readonly IBlanketModelService _service;
 
-
-        public BlanketModelsController(
-            IBlanketModelRepository repository)
+        public BlanketModelsController(IBlanketModelService service)
         {
-            _repository = repository;
+            _service = service;
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(
-                await _repository.GetAllAsync()
-            );
+            var result = await _service.GetAllAsync();
+            return Ok(result);
         }
-
-
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var model = await _repository.GetByIdAsync(id);
+            var result = await _service.GetByIdAsync(id);
 
-
-            if (model == null)
+            if (result == null)
                 return NotFound();
 
-
-            return Ok(model);
+            return Ok(result);
         }
 
-
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Create(
-            BlanketModel model)
+        public async Task<IActionResult> Create([FromBody] CreateBlanketModelDto dto)
         {
-            var result =
-                await _repository.CreateAsync(model);
-
+            var result = await _service.CreateAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -63,44 +46,26 @@ namespace CozyComfort.API.Controllers
                 result);
         }
 
-
-
-
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
-            BlanketModel model)
+            [FromBody] UpdateBlanketModelDto dto)
         {
-            if (id != model.Id)
-                return BadRequest();
+            var success = await _service.UpdateAsync(id, dto);
 
-
-            var result =
-                await _repository.UpdateAsync(model);
-
-
-            if (result == null)
+            if (!success)
                 return NotFound();
 
-
-            return Ok(result);
+            return NoContent();
         }
-
-
-
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result =
-                await _repository.DeleteAsync(id);
+            var success = await _service.DeleteAsync(id);
 
-
-            if (!result)
+            if (!success)
                 return NotFound();
-
 
             return NoContent();
         }

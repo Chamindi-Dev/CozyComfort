@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CozyComfort.Application.DTOs.TransferOrderItem
+namespace CozyComfort.Domain.DTOs.TransferOrderItem
 {
     public class CreateTransferOrderItemDto
     {

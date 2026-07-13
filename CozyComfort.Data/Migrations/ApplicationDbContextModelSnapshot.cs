@@ -239,7 +239,7 @@ namespace CozyComfort.Data.Migrations
                         {
                             t.HasCheckConstraint("CK_CustomerOrders_FinalSource", "FinalSource IS NULL OR FinalSource IN\r\n            (\r\n            'SellerStock',\r\n            'DistributorStock',\r\n            'FactoryStock',\r\n            'FactoryProduction'\r\n            )");
 
-                            t.HasCheckConstraint("CK_CustomerOrders_Status", "Status IN \r\n            (\r\n            'Pending',\r\n            'CheckingSellerStock',\r\n            'CheckingDistributorStock',\r\n            'CheckingFactoryStock',\r\n            'WaitingProduction',\r\n            'Confirmed',\r\n            'InFulfillment',\r\n            'Dispatched',\r\n            'Delivered',\r\n            'Cancelled'\r\n            )");
+                            t.HasCheckConstraint("CK_CustomerOrders_Status", "Status IN\r\n            (\r\n            'Pending',\r\n            'CheckingSellerStock',\r\n            'CheckingDistributorStock',\r\n            'CheckingFactoryStock',\r\n            'WaitingProduction',\r\n            'Confirmed',\r\n            'InFulfillment',\r\n            'Dispatched',\r\n            'Delivered',\r\n            'Cancelled'\r\n            )");
                         });
                 });
 
@@ -474,6 +474,27 @@ namespace CozyComfort.Data.Migrations
                         {
                             t.HasCheckConstraint("CK_ProductionCapacities_Values", "DailyCapacity >= 0\r\n            AND WeeklyCapacity >= 0\r\n            AND CurrentPendingQuantity >= 0\r\n            AND LeadTimeDays >= 0");
                         });
+                });
+
+            modelBuilder.Entity("CozyComfort.Domain.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleName")
+                        .IsUnique();
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("CozyComfort.Domain.Entities.Seller", b =>
@@ -748,6 +769,48 @@ namespace CozyComfort.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CozyComfort.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("CozyComfort.Domain.Entities.AvailabilityRequest", b =>
                 {
                     b.HasOne("CozyComfort.Domain.Entities.BlanketModel", "BlanketModel")
@@ -1006,6 +1069,17 @@ namespace CozyComfort.Data.Migrations
                     b.Navigation("TransferOrder");
                 });
 
+            modelBuilder.Entity("CozyComfort.Domain.Entities.User", b =>
+                {
+                    b.HasOne("CozyComfort.Domain.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("CozyComfort.Domain.Entities.BlanketModel", b =>
                 {
                     b.Navigation("AvailabilityRequests");
@@ -1059,6 +1133,11 @@ namespace CozyComfort.Data.Migrations
             modelBuilder.Entity("CozyComfort.Domain.Entities.Material", b =>
                 {
                     b.Navigation("BlanketModels");
+                });
+
+            modelBuilder.Entity("CozyComfort.Domain.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("CozyComfort.Domain.Entities.Seller", b =>

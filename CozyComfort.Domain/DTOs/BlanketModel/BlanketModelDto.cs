@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Application.DTOs.BlanketModel
+﻿namespace CozyComfort.Domain.DTOs.BlanketModel
 {
     public class BlanketModelDto
     {

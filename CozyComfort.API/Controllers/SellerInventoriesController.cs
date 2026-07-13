@@ -1,11 +1,14 @@
 ﻿using CozyComfort.Application.Interfaces;
-using CozyComfort.Data.DTOs;
+using CozyComfort.Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class SellerInventoriesController : ControllerBase
     {
         private readonly ISellerInventoryService _sellerInventoryService;
@@ -15,7 +18,6 @@ namespace CozyComfort.API.Controllers
             _sellerInventoryService = sellerInventoryService;
         }
 
-        // GET: api/SellerInventories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SellerInventoryDto>>> GetAll()
         {
@@ -23,7 +25,6 @@ namespace CozyComfort.API.Controllers
             return Ok(inventories);
         }
 
-        // GET: api/SellerInventories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SellerInventoryDto>> GetById(int id)
         {
@@ -35,7 +36,6 @@ namespace CozyComfort.API.Controllers
             return Ok(inventory);
         }
 
-        // POST: api/SellerInventories
         [HttpPost]
         public async Task<ActionResult<SellerInventoryDto>> Create(CreateSellerInventoryDto dto)
         {
@@ -47,7 +47,6 @@ namespace CozyComfort.API.Controllers
                 createdInventory);
         }
 
-        // PUT: api/SellerInventories/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateSellerInventoryDto dto)
         {
@@ -59,7 +58,6 @@ namespace CozyComfort.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/SellerInventories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

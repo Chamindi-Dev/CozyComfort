@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.Repositories;
+﻿using CozyComfort.Infrastructure.Repositories;
 using CozyComfort.Data;
 using CozyComfort.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

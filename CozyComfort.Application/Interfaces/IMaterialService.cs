@@ -1,13 +1,18 @@
-﻿using CozyComfort.Domain.Entities;
+﻿using CozyComfort.Domain.DTOs.Material;
+using CozyComfort.Domain.Entities;
 
 namespace CozyComfort.Application.Interfaces
 {
     public interface IMaterialService
     {
-        Task<IEnumerable<Material>> GetAllAsync();
-        Task<Material?> GetByIdAsync(int id);
-        Task<Material> AddAsync(Material material);
-        Task<Material?> UpdateAsync(int id, Material material);
+        Task<IEnumerable<MaterialDto>> GetAllAsync();
+
+        Task<MaterialDto?> GetByIdAsync(int id);
+
+        Task<MaterialDto> CreateAsync(CreateMaterialDto dto);
+
+        Task<bool> UpdateAsync(int id, UpdateMaterialDto dto);
+
         Task<bool> DeleteAsync(int id);
     }
 }

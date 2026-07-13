@@ -1,10 +1,10 @@
 ﻿
-using CozyComfort.Application.Interfaces;
+using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Data;
 using CozyComfort.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CozyComfort.API.Repositories
+namespace CozyComfort.Infrastructure.Repositories
 {
     public class MaterialRepository : IMaterialRepository
     {

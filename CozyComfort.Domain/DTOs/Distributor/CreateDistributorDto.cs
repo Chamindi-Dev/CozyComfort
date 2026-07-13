@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CozyComfort.Application.DTOs.Distributor
+namespace CozyComfort.Domain.DTOs.Distributor
 {
     public class CreateDistributorDto
     {

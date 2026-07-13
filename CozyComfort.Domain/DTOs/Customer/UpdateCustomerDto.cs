@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CozyComfort.Application.DTOs.Customer
+namespace CozyComfort.Domain.DTOs.Customer
 {
     public class UpdateCustomerDto
     {

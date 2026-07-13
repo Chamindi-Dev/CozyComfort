@@ -1,4 +1,4 @@
-﻿using CozyComfort.Domain.Entities;
+using CozyComfort.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CozyComfort.Data
@@ -26,6 +26,8 @@ namespace CozyComfort.Data
         public DbSet<TransferOrder> TransferOrders { get; set; }
         public DbSet<TransferOrderItem> TransferOrderItems { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -658,6 +660,45 @@ namespace CozyComfort.Data
             (CASE WHEN [SellerInventoryId] IS NOT NULL THEN 1 ELSE 0 END)
           ) = 1");
                 });
+
+            modelBuilder.Entity<Role>()
+                .HasKey(r => r.Id);
+
+            modelBuilder.Entity<Role>()
+                .Property(r => r.RoleName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<Role>()
+                .HasIndex(r => r.RoleName)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.FullName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Email)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Password)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

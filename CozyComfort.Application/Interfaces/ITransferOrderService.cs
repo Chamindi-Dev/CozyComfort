@@ -1,4 +1,4 @@
-﻿using CozyComfort.Application.DTOs.TransferOrder;
+﻿using CozyComfort.Domain.DTOs.TransferOrder;
 
 namespace CozyComfort.Application.Interfaces
 {

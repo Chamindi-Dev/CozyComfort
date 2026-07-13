@@ -1,12 +1,14 @@
-﻿using CozyComfort.Application.DTOs.AvailabilityRequest;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs.AvailabilityRequest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class AvailabilityRequestsController : ControllerBase
     {
 

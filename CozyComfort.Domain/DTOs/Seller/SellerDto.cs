@@ -1,4 +1,4 @@
-﻿namespace CozyComfort.Application.DTOs.Seller
+﻿namespace CozyComfort.Domain.DTOs.Seller
 {
     public class SellerDto
     {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CozyComfort.Domain.Entities
 {
@@ -24,10 +25,11 @@ namespace CozyComfort.Domain.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Navigation Properties
+        [JsonIgnore]
         public ICollection<Seller> Sellers { get; set; }
             = new List<Seller>();
 
+        [JsonIgnore]
         public ICollection<DistributorInventory> DistributorInventories { get; set; }
             = new List<DistributorInventory>();
     }

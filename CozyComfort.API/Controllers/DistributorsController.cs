@@ -1,106 +1,73 @@
 ﻿using CozyComfort.Application.Interfaces;
-using CozyComfort.Domain.Entities;
+using CozyComfort.Domain.DTOs.Distributor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class DistributorsController : ControllerBase
     {
-        private readonly IDistributorRepository _repository;
+        private readonly IDistributorService _service;
 
-
-        public DistributorsController(
-            IDistributorRepository repository)
+        public DistributorsController(IDistributorService service)
         {
-            _repository = repository;
+            _service = service;
         }
-
-
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<DistributorDto>>> GetAll()
         {
-            return Ok(
-                await _repository.GetAllAsync()
-            );
+            var distributors = await _service.GetAllAsync();
+            return Ok(distributors);
         }
 
-
-
-
-
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<DistributorDto>> GetById(int id)
         {
-            var distributor =
-                await _repository.GetByIdAsync(id);
-
+            var distributor = await _service.GetByIdAsync(id);
 
             if (distributor == null)
                 return NotFound();
-
 
             return Ok(distributor);
         }
 
 
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Create(
-            Distributor distributor)
+        public async Task<ActionResult<DistributorDto>> Create(CreateDistributorDto dto)
         {
-            var result =
-                await _repository.CreateAsync(distributor);
-
+            var created = await _service.CreateAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = result.Id },
-                result);
+                new { id = created.Id },
+                created);
         }
-
-
-
-
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(
+        public async Task<ActionResult<DistributorDto>> Update(
             int id,
-            Distributor distributor)
+            UpdateDistributorDto dto)
         {
-            if (id != distributor.Id)
-                return BadRequest();
+            var updated = await _service.UpdateAsync(id, dto);
 
-
-            var result =
-                await _repository.UpdateAsync(distributor);
-
-
-            if (result == null)
+            if (updated == null)
                 return NotFound();
 
-
-            return Ok(result);
+            return Ok(updated);
         }
-
-
-
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result =
-                await _repository.DeleteAsync(id);
+            var deleted = await _service.DeleteAsync(id);
 
-
-            if (!result)
+            if (!deleted)
                 return NotFound();
-
 
             return NoContent();
         }

@@ -1,55 +1,45 @@
 ﻿using CozyComfort.Application.Interfaces;
-using CozyComfort.Domain.Entities;
+using CozyComfort.Domain.DTOs.Material;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class MaterialsController : ControllerBase
     {
-        private readonly IMaterialRepository _repository;
+        private readonly IMaterialService _service;
 
-
-        public MaterialsController(IMaterialRepository repository)
+        public MaterialsController(IMaterialService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
-
-
-        // GET: api/materials
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var materials = await _repository.GetAllAsync();
+            var result = await _service.GetAllAsync();
 
-            return Ok(materials);
+            return Ok(result);
         }
 
-
-
-        // GET: api/materials/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var material = await _repository.GetByIdAsync(id);
+            var result = await _service.GetByIdAsync(id);
 
-
-            if (material == null)
+            if (result == null)
                 return NotFound();
 
-
-            return Ok(material);
+            return Ok(result);
         }
 
-
-
-        // POST: api/materials
         [HttpPost]
-        public async Task<IActionResult> Create(Material material)
+        public async Task<IActionResult> Create(CreateMaterialDto dto)
         {
-            var result = await _repository.CreateAsync(material);
+            var result = await _service.CreateAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -57,41 +47,26 @@ namespace CozyComfort.API.Controllers
                 result);
         }
 
-
-
-        // PUT: api/materials/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
-            Material material)
+            UpdateMaterialDto dto)
         {
-            if (id != material.Id)
-                return BadRequest();
-
-
-            var result = await _repository.UpdateAsync(material);
-
-
-            if (result == null)
-                return NotFound();
-
-
-            return Ok(result);
-        }
-
-
-
-
-        // DELETE: api/materials/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _repository.DeleteAsync(id);
-
+            var result = await _service.UpdateAsync(id, dto);
 
             if (!result)
                 return NotFound();
 
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _service.DeleteAsync(id);
+
+            if (!result)
+                return NotFound();
 
             return NoContent();
         }

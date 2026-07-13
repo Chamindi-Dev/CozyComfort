@@ -1,6 +1,8 @@
-﻿using CozyComfort.Application.DTOs.AvailabilityRequest;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Domain.DTOs.AvailabilityRequest;
+using CozyComfort.Infrastructure.Interfaces;
 using CozyComfort.Domain.Entities;
+using CozyComfort.Application.Interfaces;
+
 
 
 namespace CozyComfort.Application.Services
@@ -17,8 +19,6 @@ namespace CozyComfort.Application.Services
         {
             _repository = repository;
         }
-
-
 
         public async Task<IEnumerable<AvailabilityRequestDto>> GetAllAsync()
         {
@@ -42,9 +42,6 @@ namespace CozyComfort.Application.Services
                 ResponseMessage = x.ResponseMessage
             });
         }
-
-
-
 
         public async Task<AvailabilityRequestDto?> GetByIdAsync(int id)
         {
@@ -72,10 +69,6 @@ namespace CozyComfort.Application.Services
                 ResponseMessage = x.ResponseMessage
             };
         }
-
-
-
-
 
         public async Task<AvailabilityRequestDto> CreateAsync(
             CreateAvailabilityRequestDto dto)
@@ -105,9 +98,6 @@ namespace CozyComfort.Application.Services
         }
 
 
-
-
-
         public async Task UpdateAsync(
             UpdateAvailabilityRequestDto dto)
         {
@@ -127,10 +117,6 @@ namespace CozyComfort.Application.Services
 
             await _repository.UpdateAsync(entity);
         }
-
-
-
-
 
         public async Task DeleteAsync(int id)
         {

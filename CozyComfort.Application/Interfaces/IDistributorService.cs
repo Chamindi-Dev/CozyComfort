@@ -1,13 +1,17 @@
-﻿using CozyComfort.Domain.Entities;
+﻿using CozyComfort.Domain.DTOs.Distributor;
 
 namespace CozyComfort.Application.Interfaces
 {
     public interface IDistributorService
     {
-        Task<IEnumerable<Distributor>> GetAllAsync();
-        Task<Distributor?> GetByIdAsync(int id);
-        Task<Distributor> AddAsync(Distributor distributor);
-        Task UpdateAsync(Distributor distributor);
-        Task DeleteAsync(int id);
+        Task<IEnumerable<DistributorDto>> GetAllAsync();
+
+        Task<DistributorDto?> GetByIdAsync(int id);
+
+        Task<DistributorDto> CreateAsync(CreateDistributorDto dto);
+
+        Task<bool> UpdateAsync(int id, UpdateDistributorDto dto);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

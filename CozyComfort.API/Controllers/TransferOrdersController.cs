@@ -1,11 +1,14 @@
-﻿using CozyComfort.Application.DTOs.TransferOrder;
-using CozyComfort.Application.Interfaces;
+﻿using CozyComfort.Application.Interfaces;
+using CozyComfort.Domain.DTOs.TransferOrder;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyComfort.API.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TransferOrdersController : ControllerBase
     {
         private readonly ITransferOrderService _service;
